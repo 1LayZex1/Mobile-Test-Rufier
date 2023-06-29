@@ -1,11 +1,11 @@
 from kivy.app import App
-from kivy.oux.screenmanager import ScreenManager, Screen
-from kivy.oux.boxlayout import BoxLayout
-from kivy.oux.label import Label
-from kivy.oux.button import Button
-from kivy.oux.textinput import TextInput
+from kivy.oix.screenmanager import ScreenManager, Screen
+from kivy.oix.boxlayout import BoxLayout
+from kivy.oix.label import Label
+from kivy.oix.button import Button
+from kivy.oix.textinput import TextInput
 from kivy.core.window import Window
-from kivy.oux.scrollview import  ScrollView
+from kivy.oix.scrollview import  ScrollView
 
 from instructions import txt_instruction, txt_test_1, txt_test_2, txt_test_3, txt_sits
 from rufier import test
@@ -232,6 +232,6 @@ class HeartCheck(App):
         sm.add_widget(PulseScr2(name ='pulse2'))
         sm.add_widget(Result(name ='result'))
         return sm
-        
+
 app = HeartCheck()
 app.run()
