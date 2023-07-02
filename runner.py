@@ -10,8 +10,8 @@ class Runner(BoxLayout):
         super().__init__(**kwargs)
         self.total = total
         self.text_inprogress = 'Приседание'
-        self.animation = (Animation(pos_hint ={'top'; 0.1}, duration = steptime/2)
-                        + Animation(pos_hint ={'top'; 1.0}, duration = steptime/2))
+        self.animation = (Animation(pos_hint ={'top': 0.1}, duration = steptime/2)
+                        + Animation(pos_hint ={'top': 1.0}, duration = steptime/2))
         self.animation.repeat = True
         self.animation.on_progress = self.next
         self.btn = Button(size_hint=(1, 0.1), pos_hint ={'top': 1.0}, background_color = (0.73, 0.15, 0.96, 1))
