@@ -11,6 +11,11 @@ from instructions import txt_instruction, txt_test1, txt_test2, txt_test3, txt_s
 from ruffier import test
 
 from seconds import Seconds
+from sits import Sits
+from runner import Runner
+
+Window.clearcolor = (0.87, 0.54, 0.8, 0.3)
+btn_color = (0.98, 0.31, 0.8, 1)
 
 age = 7
 name = ''
@@ -35,6 +40,7 @@ class InstrScr(Screen):
 
         self.in_age = TextInput(text = '7', multiline = False)
         self.btn = Button(text = 'Начать', size_hint = (0.3, 0.2), pos_hint = {'center_x' : 0.5})
+        self.background_color = btn_color
         self.btn.on_press = self.next
 
         line1 = BoxLayout(size_hint = (0.8, None), height = '30sp')
@@ -81,6 +87,7 @@ class PulseScr(Screen):
         line.add_widget(self.in_result)
 
         self.btn = Button(text = 'Начать', size_hint = (0.3, 0.4), pos_hint ={'center_x':0.5})
+        self.background_color = btn_color
         self.btn.on_press = self.next
 
         outer = BoxLayout(orientation ='vertical', padding =8, spacing =8)
@@ -88,7 +95,9 @@ class PulseScr(Screen):
         #outer.add_widget(lbl1)
         outer.add_widget(self.lbl_sec)
         outer.add_widget(line)
-        outer.add_widget(self.btn)
+        self.line3 = BoxLayout(size_hint =(0.8, None), height ='80sp', pos_hint ={'center_x': 0.5})
+        self.line3.add_widget(self.btn)
+        outer.add_widget(self.line3)
 
         self.add_widget(outer)
 
@@ -98,6 +107,10 @@ class PulseScr(Screen):
         self.btn.set_disabled(False)
         self.btn.text = 'Продолжить'
 
+        self.line3.remove_widget(self.btn)
+        self.line3.add_widget(self.btn)
+
+    
     def next(self):
         if not self.next_screen:
             self.btn.set_disabled(True)
@@ -114,10 +127,20 @@ class PulseScr(Screen):
 class CheckSits(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-        instr = Label(text =txt_sits)
+        self.next_screen = False
+        instr = Label(text =txt_sits, size_hint=(0.5, 1))
+        self.lbl_sits = Sits(30)
+        self.run = Runner(total=30, steptime=1.5, size_hint=(0.4, 1))
+        self.run.bind(finished =self.run_finished)
+        line = BoxLayout()
+        vlay = BoxLayout(orientation= 'vertical', size_hint=(0.3, 1))
+        vlay.add_widget(self.lbl_sits)
+        line.add_widget(instr)
+        line.add_widget(vlay)
+        line.add_widget(self.run)
 
         self.btn = Button(text = 'Продолжить', size_hint =(0.3, 0.2), pos_hint ={'center_x': 0.5})
+        self.btn.background_color = btn_color
         self.btn.on_press = self.next
 
         outer = BoxLayout(orientation = 'vertical', padding =8, spacing =8)
@@ -126,12 +149,24 @@ class CheckSits(Screen):
 
         self.add_widget(outer)
 
+    def run_finished(self, instance, value):
+        self.btn.set_disabled(False)
+        self.btn.text = 'Продолжить'
+        self.next_screen = True
+
     def next(self):
-        self.manager.current = 'pules2'
-        
+        if not self.next_screen:
+            self.btn.set_disabled(True)
+            self.run.start()
+            self.run.bind(value=self.lbl_sits.next)
+        else:
+            self.manager.current = 'pules2'
+
+
 class PulseScr2(Screen):
     def __init__(self, **kwargs):
             self.next_screen = False
+            
             self.stage = 0
             super().__init__(**kwargs)
 
@@ -159,6 +194,7 @@ class PulseScr2(Screen):
             line2.add_widget(self.in_result2)
 
             self.btn = Button(text ='Завершить', size_hint =(0.3, 0.5), pos_hint = {'center_x': 0.5})
+            self.btn.background_color = btn_color
             self.btn.on_press = self.next
 
             outer = BoxLayout(orientation = 'vertical', padding = 8, spacing = 8)
